@@ -1,5 +1,5 @@
 
-import {Op} from 'sequelize'
+import {Op, where} from 'sequelize'
 import User from '../models/user'
 import {GetAllUserFilters} from './types'
 import {UserInput, UserOutput} from '../models/user'
@@ -33,6 +33,11 @@ export const deleteById = async (id: number): Promise<boolean> => {
         where: {id}
     })
     return !!deletedUser
+}
+
+export const getByEmail = async (email:string): Promise<UserOutput> => {
+    const user = await User.findOne({where: {email: email}})
+    return user;
 }
 
 export const getAll = async (filters?: GetAllUserFilters): Promise<UserOutput[]> => {

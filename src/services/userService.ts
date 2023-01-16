@@ -16,6 +16,10 @@ export class UserService {
         return userDal.getById(id)
     }
 
+    getUserByEmail(email: string): Promise<UserOutput> {
+        return userDal.getByEmail(email)
+    }
+
     deleteUserById(id: number): Promise<boolean> {
         return userDal.deleteById(id)
     }

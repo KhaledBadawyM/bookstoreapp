@@ -3,7 +3,7 @@ import {CreateUserDTO, UpdateUserDTO, FilterUserDTO} from '../dto/user.dto'
 import {UserInterface} from '../interfaces/userInterface'
 import * as userMapper from '../mappers/userMapper'
 
-export class UserController{
+export class UserController {
     userService: UserService
     constructor() {
         this.userService = new UserService();
@@ -27,6 +27,10 @@ export class UserController{
 
     async getAllUserAction(filters: FilterUserDTO): Promise<UserInterface[]> {
         return (await this.userService.getAllUsers(filters)).map(userMapper.toUser)
+    }
+
+    async getUserByEmailAction(email: string): Promise<UserInterface> {
+        return (await this.userService.getUserByEmail(email))
     }
 
 }

@@ -29,7 +29,8 @@ class User extends Model<UserAttributes, UserInput> implements UserAttributes {
     },
     email: {
       type: DataTypes.STRING,
-      allowNull: false
+      allowNull: false,
+      unique: true
     },
     password: {
       type: DataTypes.STRING
