@@ -5,27 +5,27 @@ import {GetAllUserFilters} from './types'
 import Product, {ProductInput, ProductOutput } from '../models/product'
 
 export const create = async (payload: ProductInput): Promise<ProductOutput> => {
-    const Product = await Product.create(payload)
-    return Product
+    const product = await Product.create(payload)
+    return product
 }
 
 export const update = async (id: number, payload: Partial<ProductInput>): Promise<ProductOutput> => {
-    const Product = await Product.findByPk(id)
+    const product = await Product.findByPk(id)
     if (!Product) {
         // @todo throw custom error
         throw new Error('not found')
     }
-    const updateProduct = await (Product as Product).update(payload)
+    const updateProduct = await (product as Product).update(payload)
     return updateProduct
 }
 
 export const getById = async (id: number): Promise<ProductOutput> => {
-    const Product = await Product.findByPk(id)
+    const product = await Product.findByPk(id)
     if (!Product) {
         // @todo throw custom error
         throw new Error('not found')
     }
-    return Product
+    return product
 }
 
 export const deleteById = async (id: number): Promise<boolean> => {
@@ -35,9 +35,9 @@ export const deleteById = async (id: number): Promise<boolean> => {
     return !!deletedProduct
 }
 
-export const getByEmail = async (email:string): Promise<ProductOutput> => {
-    const Product = await Product.findOne({where: {email: email}})
-    return Product;
+export const getByEmail = async (title:string): Promise<ProductOutput> => {
+    const product = await Product.findOne({where: {title: title}})
+    return product;
 }
 
 export const getAll = async (filters?: GetAllUserFilters): Promise<ProductOutput[]> => {
