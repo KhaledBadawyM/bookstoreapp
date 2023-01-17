@@ -14,14 +14,10 @@ export class UserAuth {
         
         if (token == null) return res.sendStatus(401)
     
-        // jwt.verify(token, process.env.TOKEN_SECRET, (err, decoded) => {
-        //     console.log(err)
-        //     if (err) return res.sendStatus(403)
-        //     next()
-        // })
         const data = jwt.verify(token, process.env.TOKEN_SECRET)
-        // req['userEmail'] = data.id
-        console.log(data)
+        if (!data) {
+            return res.sendStatus(401)
+        }
         next()
     }
 

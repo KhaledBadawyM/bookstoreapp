@@ -74,5 +74,4 @@ export class UserController {
     async getUserByEmailAction(email: string): Promise<UserInterface> {
         return (await this.userService.getUserByEmail(email))
     }
-
 }

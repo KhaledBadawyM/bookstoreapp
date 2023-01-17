@@ -1,8 +1,8 @@
 
 import {Op, where} from 'sequelize'
-// import Product from '../models/product'
 import {GetAllUserFilters} from './types'
 import Product, {ProductInput, ProductOutput } from '../models/product'
+import User from '../models/user'
 
 export const create = async (payload: ProductInput): Promise<ProductOutput> => {
     const product = await Product.create(payload)
@@ -35,16 +35,18 @@ export const deleteById = async (id: number): Promise<boolean> => {
     return !!deletedProduct
 }
 
-export const getByEmail = async (title:string): Promise<ProductOutput> => {
+export const getByTitle = async (title:string): Promise<ProductOutput> => {
     const product = await Product.findOne({where: {title: title}})
     return product;
 }
 
-export const getAll = async (filters?: GetAllUserFilters): Promise<ProductOutput[]> => {
+export const getAll = async (userId:number, filters?: GetAllUserFilters): Promise<ProductOutput[]> => {
     return Product.findAll({
         where: {
-            ...(filters?.isDeleted && {deletedAt: {[Op.not]: null}})
+            '$User.id$': userId,
         },
-        ...((filters?.isDeleted || filters?.includeDeleted) && {paranoid: true})
+        include: [
+            {model: User, as: User.tableName}
+        ]
     })
 }
