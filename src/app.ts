@@ -1,19 +1,26 @@
 import express from 'express';
 import routes from './routes'
 import dbInit from './db/init'
+import cors from 'cors'
 const app = express();
-const port = 3000;
+const port = 8000;
 dbInit()
 
 // app.get('/', (req, res) => {
 //   res.send('Hello World!');
 // });
-app.use(express.json());
+// app.use(express.json());
+var corsOptions = {
+  origin: 'http://localhost:3000',
+  optionsSuccessStatus: 200 
+}
+app.use(cors(corsOptions))
+app.use(express.json())
 app.use(express.urlencoded({ extended: true }));
 app.use('/api', routes)
 
 app.get('/', async(req: express.Request, res: express.Response) => {
-  return res.status(200).send({ message: `Welcome to the product CRUD App` })
+  res.render('login.html');
 
 })
 

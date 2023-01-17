@@ -2,10 +2,14 @@
 import * as userDal from '../db/dal/userDal'
 import {GetAllUserFilters} from '../db/dal/types'
 import {UserInput, UserOutput} from '../db/models/user'
+import bcrypt from 'bcrypt';
 
 export class UserService {
-    createUser(payload: UserInput):Promise<UserOutput> {
-        return userDal.create(payload)
+    readonly saltRounds = 12
+
+    async createUser(payload: UserInput):Promise<UserOutput> {
+        return this.encryptPassword(payload, userDal.create)
+        // return userDal.create(payload)
     }
 
     updateUser(payload: UserInput): Promise<UserOutput> {
@@ -26,6 +30,15 @@ export class UserService {
 
     getAllUsers(filters: GetAllUserFilters): Promise<UserOutput[]> {
         return userDal.getAll(filters)
+    }
+
+    private async encryptPassword(payload:UserInput, callback:any) {
+        payload.password = await bcrypt.hash(payload.password, this.saltRounds);
+        return callback(payload)
+    }
+
+    async verifyPassword(plainPassword:string, encryptPassword:string) {
+        return bcrypt.compareSync(plainPassword, encryptPassword);
     }
 }
 // export const create = (payload: UserInput): Promise<UserOutput> => {
