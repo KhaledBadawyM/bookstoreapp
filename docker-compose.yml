@@ -1,0 +1,48 @@
+
+version: "3"
+services:
+  mysql:
+    container_name: mysql
+    restart: always
+    image: mysql:8.0.39
+    ports:
+      - "3307:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_ROOT_HOST: '%'
+      MYSQL_DATABASE: bookstore
+    networks:
+      - bookstore-network
+    volumes:
+      - mysql_data:/var/lib/mysql
+
+  bookstore:
+    build:
+      dockerfile: Dockerfile
+    container_name: bookstore
+    volumes:
+      - .:/app
+    ports:
+      - "8000:8000"
+    environment:
+      PORT: 8000
+      DB_HOST: mysql
+      DB_PORT: 3306
+      DB_DATABASE: bookstore
+      DB_USER: root
+      DB_PASSWORD: root
+      DB_DRIVER: mysql
+    command: [ "/usr/local/bin/wait-for-it", "mysql:3306", "-t", "30","--", "sh", "-c", "npm start --host=0.0.0.0 --port=8000"]
+    depends_on:
+      mysql:
+        condition: service_started
+    networks:
+      - bookstore-network
+
+networks:
+  bookstore-network:
+    driver: bridge
+
+volumes:
+  mysql_data:
+
