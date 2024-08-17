@@ -1,44 +1,44 @@
 import { DataTypes, Model, Optional } from 'sequelize'
 import sequelizeConnection from '../config'
+import Book from './book';
+import StoreBook from './storeBook';
 
-interface UserAttributes {
+interface StoreAttributes {
     id: number;
-    email: string;
-    password: string;
+    name: string;
+    address: string;
     createdAt?: Date;
     updatedAt?: Date;
     deletedAt?: Date;
 }
-export interface UserInput extends Optional<UserAttributes, 'id'> {}
-export interface UserOutput extends Required<UserAttributes> {}
+export interface StoreInput extends Optional<StoreAttributes, 'id'> {}
+export interface StoreOutput extends Required<StoreAttributes> {}
 
-class User extends Model<UserAttributes, UserInput> implements UserAttributes {
-    public id!: number
-    public email!: string
-    public password!: string
+class Store extends Model<StoreAttributes, StoreInput> implements StoreAttributes {
+    public id: number
+    public name: string
+    public address: string;
     public readonly createdAt!: Date;
     public readonly updatedAt!: Date;
     public readonly deletedAt!: Date;
   }
   
-  User.init({
+  Store.init({
     id: {
       type: DataTypes.INTEGER.UNSIGNED,
       autoIncrement: true,
       primaryKey: true,
     },
-    email: {
+    name: {
       type: DataTypes.STRING,
       allowNull: false,
-      unique: true
     },
-    password: {
+    address: {
       type: DataTypes.STRING
-    },
+    }
   }, {
     timestamps: true,
     sequelize: sequelizeConnection,
     paranoid: true
   })
-  
-export default User
+export default Store

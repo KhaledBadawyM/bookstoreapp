@@ -3,7 +3,6 @@ import routes from './routes'
 import dbInit from './db/init'
 import cors from 'cors'
 const app = express();
-const port = 8000;
 dbInit()
 
 // app.get('/', (req, res) => {
@@ -24,6 +23,6 @@ app.get('/', async(req: express.Request, res: express.Response) => {
 
 })
 
-app.listen(port, () => {
-  return console.log(`Express is listening at http://localhost:${port}`);
+app.listen(process.env.PORT, () => {
+  return console.log(`Express is listening at http://localhost:${process.env.PORT}`);
 });
