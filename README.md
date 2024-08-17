@@ -26,7 +26,9 @@ npm start
 Using Docker:
 
 1- Ensure Docker and Docker Compose are installed.
+
 2- Navigate to the project directory.
+
 3- Run the Docker Compose command:
 sudo docker-compose up --build
 
